@@ -133,10 +133,10 @@ class ChatWidget(QWidget):
         self.ai_display.setTextCursor(cursor)
 
         if not self.document_text:
-            cursor = self.text_edit.textCursor()
+            cursor = self.ai_display.textCursor()
             cursor.movePosition(cursor.MoveOperation.End)
             cursor.deletePreviousChar()
-            self.text_edit.setTextCursor(cursor)
+            self.ai_display.setTextCursor(cursor)
 
             self.ai_display.append(f'⚠️ Please upload a document first.\n\n')
             self.send_btn.setEnabled(True)
@@ -199,6 +199,11 @@ CRITICAL FORMATTING RULES:
         self.send_btn.setEnabled(True)
 
     def on_ai_error(self, error_msg):
+        cursor = self.ai_display.textCursor()
+        cursor.movePosition(cursor.MoveOperation.End)
+        cursor.deletePreviousChar()
+        self.ai_display.setTextCursor(cursor)
+        
         self.ai_display.append(f'❌ Error: {error_msg}\n\n')
         self.messages.pop()
         self.send_btn.setEnabled(True)
